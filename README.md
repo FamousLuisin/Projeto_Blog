@@ -9,3 +9,5 @@ projeto de um blog
 - Configurar as variaveis de ambiente no settings 
 - Configurar arquivos staticos e de media no settings
 - Configurar na url os arquivos de media, para usar quando o debug estiver como True
+- Criar arquivo Dockerfile para a configuração do docker
+- Dockerfile: arquivo de instruções usadas pelo Docker ao construir uma imagem Docker (Possui todos os passos para construir a imagem)
