@@ -1,0 +1,37 @@
+# docker ps -a (Todos os contaioners no seu docker)
+# docker-compose up --build (buildar um docker)
+# docker-compose up --build --force-recreate (Forçar a recriação de um docker)
+# docker rm xxx (apagar o docker que a partir das 3 primeiras letras)
+# docker image ls (listar as imagens)
+# docker image rm ou docker rmi (apagar as imagens a partir 3 primeiras letras do id)
+
+
+version: '3.9'
+
+# Criando services / containers
+services:
+  # Container da aplicação django
+  djangoapp:
+    container_name: djangoapp
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./djangoapp:/djangoapp
+      - ./data/web/static:/data/web/static/
+      - ./data/web/media:/data/web/media/
+    # Usar o arquivo contendo as variaveis de ambiente para dentro do django no container  
+    env_file:
+      - ./dotenv_files/.env
+    # O django depende do psql  
+    depends_on:
+      - psql
+  # Container da imagem do postgre
+  psql:
+    container_name: psql
+    image: postgres:13-alpine
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
