@@ -11,5 +11,6 @@ projeto de um blog
 - Configurar na url os arquivos de media, para usar quando o debug estiver como True
 - Criar arquivo Dockerfile para a configuração do docker
 - Dockerfile: arquivo de instruções usadas pelo Docker ao construir uma imagem Docker (Possui todos os passos para construir a imagem)
-- O dockerfile cria/biuldar/construir uma imagem ao seu gosto
+- O dockerfile cria/biulda/constroi uma imagem ao seu gosto
 - Criar o arquivo docker-compose.yml (para biuldar o docker do django e do postgresql)
+- Com os scripts.sh tem como fazer varios comandos ja descritos no docker-compose (mas não precisa escrever todo o comando e apenas o nome do arquivo aonde esta aquele comando)

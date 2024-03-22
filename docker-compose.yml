@@ -4,6 +4,9 @@
 # docker rm xxx (apagar o docker que a partir das 3 primeiras letras)
 # docker image ls (listar as imagens)
 # docker image rm ou docker rmi (apagar as imagens a partir 3 primeiras letras do id)
+# executar um comando dentro do docker -> docker-compose run --rm djangoapp <-
+# Ou -> docker-compose run --rm djangoapp /bin/sh -c 'comando' <-
+# docker-compose run --rm djangoapp /bin/sh -c 'echo $PATH' --> Ver o caminho do path
 
 
 version: '3.9'
