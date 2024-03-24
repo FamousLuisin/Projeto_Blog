@@ -14,3 +14,6 @@ projeto de um blog
 - O dockerfile cria/biulda/constroi uma imagem ao seu gosto
 - Criar o arquivo docker-compose.yml (para biuldar o docker do django e do postgresql)
 - Com os scripts.sh tem como fazer varios comandos ja descritos no docker-compose (mas não precisa escrever todo o comando e apenas o nome do arquivo aonde esta aquele comando)
+
+# App site_setup:
+- Serve para a configuração do site
