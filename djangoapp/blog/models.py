@@ -70,6 +70,10 @@ class Page(models.Model):
         return self.title
     
 
+class PostManager(models.Manager):
+    def get_published(self):
+        return self.filter(is_published=True).order_by('-pk')
+
 class Post(models.Model):
     class Meta:
         verbose_name = 'Post'
@@ -81,15 +85,15 @@ class Post(models.Model):
         unique=True, default=None,
         null=True, blank=True, max_length=50
     )
+
+    objects = PostManager()
     
     excerpt = models.CharField(max_length=250)
-    
     is_published = models.BooleanField(
         default=False, 
         help_text='Caso queira mostrar a pagina deve marcar'
     )
     content = models.TextField()
-
     cover = models.ImageField(upload_to='posts/%Y/%m/', blank=True, default='')
     cover_in_post_content = models.BooleanField(
         default=True,
