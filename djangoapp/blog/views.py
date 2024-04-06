@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
-from blog.models import Post
+from blog.models import Post, Page
 from django.db.models import Q
 
 PER_PAGE = 9
@@ -85,12 +85,13 @@ def created_by(request, author_pk):
     )
 
 def page(request, slug):
-
+    page = Page.objects.filter(is_publishe=True).filter(slug=slug).first()
+    print(page)
     return render(
         request,
         'blog/pages/page.html',
         {
-            # 'page_obj': page_obj,
+            'page': page,
         }
     )
 
