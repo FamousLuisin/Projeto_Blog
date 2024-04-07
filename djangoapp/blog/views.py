@@ -1,12 +1,11 @@
 from typing import Any
-from django.core.paginator import Paginator
 from django.db.models.query import QuerySet
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from blog.models import Post, Page
 from django.db.models import Q
 from django.contrib.auth.models import User
-from django.http import Http404, HttpRequest, HttpResponse
-from django.views.generic import ListView
+from django.http import Http404
+from django.views.generic import ListView, DetailView
 
 PER_PAGE = 3
 
@@ -125,7 +124,7 @@ class SearchListView(PostListView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        page_title = f'Search - {self._search_value[:20]} -  '
+        page_title = f'{self._search_value[:20]} - Search  -  '
         
         ctx.update({
             'page_title': page_title,
@@ -137,40 +136,42 @@ class SearchListView(PostListView):
         if self._search_value == '':
             return redirect('blog:index')
         return super().get(request, *args, **kwargs)
-
-def page(request, slug):
-    page_obj = Page.objects.filter(is_publishe=True).filter(slug=slug).first()
     
-    if page_obj is None:
-        raise Http404()
+class PageDetailView(DetailView):
+    model = Page
+    template_name = 'blog/pages/page.html'
+    slug_field = 'slug'
+    context_object_name = 'page'
 
-    page_title = f'{page_obj.title} - Page - '
+    def get_queryset(self):
+        return super().get_queryset().filter(is_publishe=True)
 
-    return render(
-        request,
-        'blog/pages/page.html',
-        {
-            'page': page_obj,
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        page = self.get_object()
+        page_title = f'{page.title} - Page - '
+
+        ctx.update({
             'page_title': page_title,
-        }
-    )
+        })
+        return ctx
+    
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog/pages/post.html'
+    slug_field = 'slug'
+    context_object_name = 'post'
+    queryset = Post.objects.get_published()
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        post = self.get_object()
+        page_title = f'{post.title} - Post - '
 
-def post(request, slug):
-    post_obj = Post.objects.get_published().filter(slug=slug).first()
-
-    if post_obj is None:
-        raise Http404()
-
-    page_title = f'{post_obj.title} - Post - '
-
-    return render(
-        request,
-        'blog/pages/post.html',
-        {
-            'post': post_obj,
+        ctx.update({
             'page_title': page_title,
-        }
-    )
+        })
+        return ctx
 
 # =============================== Function =============================== #
 
@@ -284,6 +285,42 @@ def post(request, slug):
 #         {
 #             'page_obj': posts,
 #             'search_value': search_value,
+#             'page_title': page_title,
+#         }
+#     )
+
+
+# def page(request, slug):
+#     page_obj = Page.objects.filter(is_publishe=True).filter(slug=slug).first()
+    
+#     if page_obj is None:
+#         raise Http404()
+
+#     page_title = f'{page_obj.title} - Page - '
+
+#     return render(
+#         request,
+#         'blog/pages/page.html',
+#         {
+#             'page': page_obj,
+#             'page_title': page_title,
+#         }
+#     )
+
+
+# def post(request, slug):
+#     post_obj = Post.objects.get_published().filter(slug=slug).first()
+
+#     if post_obj is None:
+#         raise Http404()
+
+#     page_title = f'{post_obj.title} - Post - '
+
+#     return render(
+#         request,
+#         'blog/pages/post.html',
+#         {
+#             'post': post_obj,
 #             'page_title': page_title,
 #         }
 #     )
